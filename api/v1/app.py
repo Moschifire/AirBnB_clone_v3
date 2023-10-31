@@ -8,6 +8,8 @@ from flask_cors import CORS, cross_origin
 from flasgger import Swagger
 from models import storage
 import os
+from os import environ
+from flasgger.utils import swag_from
 from werkzeug.exceptions import HTTPException
 
 # Global Flask Application Variable: app
@@ -88,7 +90,12 @@ if __name__ == "__main__":
     """
     MAIN Flask App
     """
-    # initializes global error handling
-    setup_global_errors()
+    host = environ.get('HBNB_API_HOST')
+    port = environ.get('HBNB_API_PORT')
+    if not host:
+        host = '0.0.0.0'
+    if not port:
+        port = '5000'
     # start Flask app
-    app.run(host=host, port=port)
+    app.run(host=host, port=port, threaded=True)
+    
